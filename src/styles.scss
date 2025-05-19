@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./app/common-ui/profile-card/profile-card.component.scss";
+
+:root {
+  --dark-color: #000;
+  --light-color: #fff;
+  --primary-color: #ae7aff;
+}
+body {
+  background: var(--dark-color);
+  color: var(--light-color);
+  font-family: "JetBrains Mono";
+}
+p {
+  margin: 0;
+}
+
+.skill-tag {
+  display: inline;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--light-color);
+  border-radius: 2px;
+  height: 24px;
+  padding: 4px 8px;
+  margin-right: 4px;
+}
+
+.primary-button {
+  background-color: var(--primary-color);
+  padding: 10px 20px;
+  color: var(--dark-color);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  border: none;
+}
+
+.h6 {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 24px;
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 20px;
+}
