@@ -1,5 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-@import "./app/common-ui/profile-card/profile-card.component.scss";
+// @import "./app/common-ui/profile-card/profile-card.component.scss";
 
 :root {
   --dark-color: #000;
@@ -11,19 +10,13 @@ body {
   color: var(--light-color);
   font-family: "JetBrains Mono";
 }
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 p {
   margin: 0;
-}
-
-.skill-tag {
-  display: inline;
-  font-size: 12px;
-  font-weight: 700;
-  border: 1px solid var(--light-color);
-  border-radius: 2px;
-  height: 24px;
-  padding: 4px 8px;
-  margin-right: 4px;
 }
 
 .primary-button {
