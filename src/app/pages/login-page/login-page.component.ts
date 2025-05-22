@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -15,6 +16,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class LoginPageComponent {
   authService = inject(AuthService);
+  router = inject(Router);
 
   form = new FormGroup({
     username: new FormControl(null, Validators.required),
@@ -24,7 +26,11 @@ export class LoginPageComponent {
     if (this.form.valid) {
       const { username, password } = this.form.value;
       if (username && password) {
-        this.authService.login({ username, password }).subscribe();
+        this.authService.login({ username, password }).subscribe({
+          next: () => {
+            this.router.navigate(['']);
+          },
+        });
 
         console.log(this.form.value);
       }
