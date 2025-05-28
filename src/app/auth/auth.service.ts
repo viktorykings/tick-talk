@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { ITokenResponse } from './auth.interface';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   http = inject(HttpClient);
+  router = inject(Router);
   baseURL = 'https://icherniakov.ru/yt-course/auth/';
   cookieService = inject(CookieService);
 
@@ -18,6 +20,7 @@ export class AuthService {
   get isAuth() {
     if (!this.token) {
       this.token = this.cookieService.get('token');
+      this.refreshToken = this.cookieService.get('refreshToken');
     }
     return !!this.token;
   }
@@ -28,11 +31,37 @@ export class AuthService {
     fd.append('password', payload.password);
     return this.http.post<ITokenResponse>(`${this.baseURL}token`, fd).pipe(
       tap((val) => {
-        this.token = val.access_token;
-        this.refreshToken = val.refresh_token;
-        this.cookieService.set('token', this.token);
-        this.cookieService.set('refreshToken', this.refreshToken);
+        this.saveTokens(val);
       })
     );
+  }
+
+  logout() {
+    this.cookieService.deleteAll();
+    this.token = null;
+    this.refreshToken = null;
+    this.router.navigate(['/login']);
+  }
+
+  refreshAuthToken() {
+    return this.http
+      .post<ITokenResponse>(`${this.baseURL}refresh`, {
+        refresh_token: this.refreshToken,
+      })
+      .pipe(
+        tap((res) => {
+          this.saveTokens(res);
+        }),
+        catchError((err) => {
+          this.logout();
+          return throwError(err);
+        })
+      );
+  }
+  saveTokens(res: ITokenResponse) {
+    this.token = res.access_token;
+    this.refreshToken = res.refresh_token;
+    this.cookieService.set('token', this.token);
+    this.cookieService.set('refreshToken', this.refreshToken);
   }
 }

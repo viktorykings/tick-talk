@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,6 +18,8 @@ export class LoginPageComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
+  isPasswordVisible = signal<boolean>(false);
+
   form = new FormGroup({
     username: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
@@ -36,20 +38,4 @@ export class LoginPageComponent {
       }
     }
   }
-  // onSubmit() {
-  //   if (this.form.valid) {
-  //     const { username, password } = this.form.value;
-  //     if (username && password) {
-  //       this.authService.login({ username, password }).subscribe({
-  //         next: (res) => {
-  //           console.log('Login success:', res);
-  //           // возможно, сохранить токен или перенаправить
-  //         },
-  //         error: (err) => {
-  //           console.error('Login failed:', err);
-  //         },
-  //       });
-  //     }
-  //   }
-  // }
 }
